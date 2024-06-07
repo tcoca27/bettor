@@ -62,3 +62,13 @@ export const fixtures = pgTable("fixtures", {
 
 export type InsertFixture = typeof fixtures.$inferInsert;
 export type SelectFixture = typeof fixtures.$inferSelect;
+
+export const fixtureVotes = pgTable("fixture_votes", {
+  id: serial("id").primaryKey(),
+  fixtureId: integer("fixture_id").references(() => fixtures.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  voterId: text("voter_id").notNull(),
+});
+
+export type InsertFixtureVote = typeof fixtureVotes.$inferInsert;
+export type SelectFixtureVote = typeof fixtureVotes.$inferSelect;
