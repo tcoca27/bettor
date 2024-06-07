@@ -15,6 +15,13 @@
       "when": 1717756127018,
       "tag": "0001_players_tbl",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1717758439111,
+      "tag": "0002_fixtures_tbl",
+      "breakpoints": true
     }
   ]
 }

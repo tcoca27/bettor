@@ -48,3 +48,17 @@ export const scorers = pgTable("scorers", {
 
 export type InsertScorer = typeof scorers.$inferInsert;
 export type SelectScorer = typeof scorers.$inferSelect;
+
+export const fixtures = pgTable("fixtures", {
+  id: serial("id").primaryKey(),
+  homeTeam: integer("home_team").references(() => teams.id),
+  awayTeam: integer("away_team").references(() => teams.id),
+  homeGoals: text("home_goals"),
+  awayGoals: text("away_goals"),
+  date: timestamp("date"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type InsertFixture = typeof fixtures.$inferInsert;
+export type SelectFixture = typeof fixtures.$inferSelect;

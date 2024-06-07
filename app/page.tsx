@@ -1,4 +1,5 @@
 import GroupTable from "@/components/GroupTable";
+import TodaysFixtures from "@/components/TodaysFixtures";
 import TopScorers from "@/components/TopScorers";
 import { db } from "@/drizzle/db";
 import { teams } from "@/drizzle/schema";
@@ -24,8 +25,9 @@ export default async function Home() {
           ))}
         </div>
         <div className="flex flex-col gap-4 text-center">
-          <h3 className="text-lg font-bold">Top Scorers</h3>
+          <h3 className="text-lg font-bold">Details</h3>
           <TopScorers />
+          <TodaysFixtures />
         </div>
       </div>
     </main>

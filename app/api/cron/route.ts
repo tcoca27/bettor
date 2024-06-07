@@ -1,5 +1,12 @@
 import { db } from "@/drizzle/db";
-import { InsertScorer, InsertTeam, teams, scorers } from "@/drizzle/schema";
+import {
+  InsertScorer,
+  InsertTeam,
+  teams,
+  scorers,
+  InsertFixture,
+  fixtures,
+} from "@/drizzle/schema";
 import { NextResponse } from "next/server";
 
 const updateTeams = async () => {
@@ -43,13 +50,12 @@ const updateScorers = async () => {
     }
   );
   const scorersResponse = await response.json();
-  console.log(scorersResponse);
 
   await db.delete(scorers);
 
   const inserts: InsertScorer[] = scorersResponse
     .filter(
-      (scorer: any) => scorer.player_place < 5 && scorer.team_key !== "17"
+      (scorer: any) => scorer.player_place <= 5 && scorer.team_key !== "17"
     )
     .map((scorer: any) => ({
       name: scorer.player_name,
@@ -60,9 +66,42 @@ const updateScorers = async () => {
   await db.insert(scorers).values(inserts);
 };
 
+const updateFixtures = async () => {
+  const todaysDate = new Date();
+  const year = todaysDate.getFullYear();
+  const month = String(todaysDate.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+  const day = String(todaysDate.getDate()).padStart(2, "0");
+
+  const formattedDate = `${year}-${month}-${day}`;
+  const response = await fetch(
+    `https://apiv3.apifootball.com/?action=get_events&from=${formattedDate}&to=2024-09-11&league_id=1&APIkey=${process.env.API_FOOTBALL_KEY}`,
+    {
+      cache: "no-store",
+    }
+  );
+  const fixturesResponse = await response.json();
+  console.log(fixturesResponse);
+  const inserts: InsertFixture[] = fixturesResponse.map((fixture: any) => ({
+    id: parseInt(fixture.match_id),
+    homeTeam: parseInt(fixture.match_hometeam_id),
+    awayTeam: parseInt(fixture.match_awayteam_id),
+    homeGoals: fixture.match_hometeam_score,
+    awayGoals: fixture.match_awayteam_score,
+    date: new Date(fixture.match_date),
+  }));
+
+  for (const fixture of inserts) {
+    await db
+      .insert(fixtures)
+      .values(fixture)
+      .onConflictDoUpdate({ target: fixtures.id, set: fixture });
+  }
+};
+
 export const GET = async () => {
   await updateTeams();
   await updateScorers();
+  await updateFixtures();
   return new NextResponse("Success", {
     status: 200,
   });
