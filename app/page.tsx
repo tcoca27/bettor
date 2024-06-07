@@ -1,8 +1,10 @@
 import GroupTable from "@/components/GroupTable";
 import TodaysFixtures from "@/components/TodaysFixtures";
 import TopScorers from "@/components/TopScorers";
+import TodaysFixturesSkeleton from "@/components/skeletons/TodaysFixturesSkeleton";
 import { db } from "@/drizzle/db";
 import { teams } from "@/drizzle/schema";
+import { Suspense } from "react";
 
 export default async function Home() {
   const groups = await db
@@ -27,7 +29,9 @@ export default async function Home() {
         <div className="flex flex-col gap-4 text-center">
           <h3 className="text-lg font-bold">Details</h3>
           <TopScorers />
-          <TodaysFixtures />
+          <Suspense fallback={<TodaysFixturesSkeleton />}>
+            <TodaysFixtures />
+          </Suspense>
         </div>
       </div>
     </main>

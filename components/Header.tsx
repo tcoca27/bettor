@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CurrentUser } from "@stackframe/stack";
+import { Separator } from "./ui/separator";
 
 export const ProfileDropdown = ({ user }: { user: CurrentUser }) => {
   return (
@@ -53,9 +54,9 @@ const Header = async () => {
   const user = await stackServerApp.getUser();
 
   return (
-    <header className="sticky min-w-full border-b-2 py-4">
+    <header className="sticky min-w-full py-4">
       <div className="mx-auto flex max-w-5xl justify-between">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
           <Link href="/one-time">
             <Button variant={"link"}>One Time</Button>
           </Link>
@@ -63,10 +64,14 @@ const Header = async () => {
             <Button variant={"link"}>Ongoing</Button>
           </Link>
         </div>
-        <Link href="/" className="pt-2">
-          <h1 className="text-xl font-semibold">Bettor</h1>
-        </Link>
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex-1 pt-2 text-center">
+          <Link href="/">
+            <h1 className="text-xl font-semibold text-primary hover:text-blue-900">
+              Bettor
+            </h1>
+          </Link>
+        </div>
+        <div className="flex items-center space-x-2">
           {!user ? (
             <>
               <Link href={stackServerApp.urls.signIn}>
@@ -81,6 +86,7 @@ const Header = async () => {
           )}
         </div>
       </div>
+      <Separator className="mt-4" />
     </header>
   );
 };
