@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { stackServerApp } from "@/stack";
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CurrentUser } from "@stackframe/stack";
 import { Separator } from "./ui/separator";
+import TeamsSelector from "./TeamsSelector";
 
 export const ProfileDropdown = ({ user }: { user: CurrentUser }) => {
   return (
@@ -54,40 +55,51 @@ const Header = async () => {
   const user = await stackServerApp.getUser();
 
   return (
-    <header className="sticky min-w-full py-4">
-      <div className="mx-auto flex max-w-5xl justify-between">
-        <div className="flex items-center space-x-4">
-          <Link href="/one-time">
-            <Button variant={"link"}>One Time</Button>
-          </Link>
-          <Link href="/ongoing">
-            <Button variant={"link"}>Ongoing</Button>
-          </Link>
+    <>
+      <header className="sticky min-w-full py-4 max-sm:px-4">
+        <div className="mx-auto flex max-w-5xl justify-between">
+          <div className="flex items-center space-x-4 max-sm:space-x-2">
+            <Link href="/one-time">
+              <Button className="pl-0 max-sm:px-0" variant={"link"}>
+                One Time
+              </Button>
+            </Link>
+            <Link href="/ongoing">
+              <Button className="max-sm:px-0" variant={"link"}>
+                Ongoing
+              </Button>
+            </Link>
+          </div>
+          <div className="flex-1 pt-2 text-center max-sm:hidden">
+            <Link href="/">
+              <h1 className="text-xl font-semibold text-primary hover:text-blue-900">
+                Bettor
+              </h1>
+            </Link>
+          </div>
+          <div className="flex items-center space-x-2">
+            {!user ? (
+              <>
+                <Link href={stackServerApp.urls.signIn}>
+                  <Button variant={"default"}>Login</Button>
+                </Link>
+                <Link href={stackServerApp.urls.signUp}>
+                  <Button variant={"ghost"}>Sign Up</Button>
+                </Link>
+              </>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Suspense fallback={<></>}>
+                  <TeamsSelector />
+                </Suspense>
+                <ProfileDropdown user={user} />
+              </div>
+            )}
+          </div>
         </div>
-        <div className="flex-1 pt-2 text-center">
-          <Link href="/">
-            <h1 className="text-xl font-semibold text-primary hover:text-blue-900">
-              Bettor
-            </h1>
-          </Link>
-        </div>
-        <div className="flex items-center space-x-2">
-          {!user ? (
-            <>
-              <Link href={stackServerApp.urls.signIn}>
-                <Button variant={"default"}>Login</Button>
-              </Link>
-              <Link href={stackServerApp.urls.signUp}>
-                <Button variant={"ghost"}>Sign Up</Button>
-              </Link>
-            </>
-          ) : (
-            <ProfileDropdown user={user} />
-          )}
-        </div>
-      </div>
-      <Separator className="mt-4" />
-    </header>
+      </header>
+      <Separator />
+    </>
   );
 };
 

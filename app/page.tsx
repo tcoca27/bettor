@@ -14,8 +14,15 @@ export default async function Home() {
   const dbTeams = await db.select().from(teams);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between p-8">
       <div className="flex max-w-5xl flex-col gap-4 font-mono text-sm lg:flex-row">
+        <div className="flex flex-col gap-4 text-center">
+          <h3 className="text-lg font-bold">Details</h3>
+          <Suspense fallback={<TodaysFixturesSkeleton />}>
+            <TodaysFixtures />
+          </Suspense>
+          <TopScorers />
+        </div>
         <div className="flex flex-col gap-4 text-center">
           <h3 className="text-lg font-bold">Group Stage Standings</h3>
           {groups.map((group) => (
@@ -25,13 +32,6 @@ export default async function Home() {
               teams={dbTeams.filter((team) => team.group === group.group)}
             />
           ))}
-        </div>
-        <div className="flex flex-col gap-4 text-center">
-          <h3 className="text-lg font-bold">Details</h3>
-          <TopScorers />
-          <Suspense fallback={<TodaysFixturesSkeleton />}>
-            <TodaysFixtures />
-          </Suspense>
         </div>
       </div>
     </main>

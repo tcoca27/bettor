@@ -10,7 +10,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const TodaysFixtures = async () => {
-  const givenDateString = "2024-06-15";
+  const givenDateString = "2024-06-14";
   const givenDate = new Date(givenDateString);
   const todaysDate = new Date() > givenDate ? new Date() : givenDate;
   const tomorrow = new Date(todaysDate);
@@ -48,7 +48,7 @@ const TodaysFixtures = async () => {
                   key={match.id}
                   className={cn(
                     match.id === popularId
-                      ? "border-2 border-primary after:content-['Bettor'] after:font-semibold after:text-primary after:absolute after:right-0 after:bottom-0"
+                      ? "!border-2 border-primary after:content-['Bettor'] after:font-semibold after:text-primary after:absolute after:right-0 after:bottom-0"
                       : "",
                     "relative"
                   )}
