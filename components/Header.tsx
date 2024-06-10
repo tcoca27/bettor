@@ -59,7 +59,7 @@ const Header = async () => {
       <header className="sticky min-w-full py-4 max-sm:px-4">
         <div className="mx-auto flex max-w-5xl justify-between">
           <div className="flex items-center space-x-4 max-sm:space-x-2">
-            <Link href="/one-time">
+            <Link href="/onetime/winner">
               <Button className="pl-0 max-sm:px-0" variant={"link"}>
                 One Time
               </Button>

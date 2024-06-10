@@ -29,6 +29,13 @@
       "when": 1717761853967,
       "tag": "0003_fixture_votes_tbl",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1718005531379,
+      "tag": "0004_winner_votes_tbl",
+      "breakpoints": true
     }
   ]
 }

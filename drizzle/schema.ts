@@ -68,7 +68,19 @@ export const fixtureVotes = pgTable("fixture_votes", {
   fixtureId: integer("fixture_id").references(() => fixtures.id),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   voterId: text("voter_id").notNull(),
+  houseId: text("house_id").notNull(),
 });
 
 export type InsertFixtureVote = typeof fixtureVotes.$inferInsert;
 export type SelectFixtureVote = typeof fixtureVotes.$inferSelect;
+
+export const winnerVotes = pgTable("winner_votes", {
+  id: serial("id").primaryKey(),
+  teamId: integer("team_id").references(() => teams.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  voterId: text("voter_id").notNull(),
+  houseId: text("house_id").notNull(),
+});
+
+export type InsertWinnerVote = typeof winnerVotes.$inferInsert;
+export type SelectWinnerVote = typeof winnerVotes.$inferSelect;

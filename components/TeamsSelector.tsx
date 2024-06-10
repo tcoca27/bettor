@@ -29,10 +29,6 @@ const TeamsSelector = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("..", selectedTeam);
-  }, [selectedTeam]);
-
   return teams.length > 0 ? (
     <>
       <Select
