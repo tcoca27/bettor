@@ -13,6 +13,7 @@ const TodaysFixtures = async () => {
   const givenDateString = "2024-06-14";
   const givenDate = new Date(givenDateString);
   const todaysDate = new Date() > givenDate ? new Date() : givenDate;
+  todaysDate.setUTCHours(0);
   const tomorrow = new Date(todaysDate);
   tomorrow.setDate(tomorrow.getDate() + 1);
   const todaysFixtures = await db.select().from(fixtures).where(sql`
@@ -22,6 +23,8 @@ const TodaysFixtures = async () => {
   const teamIds = todaysFixtures
     .map((fixture) => [fixture.homeTeam, fixture.awayTeam])
     .flat();
+
+  if (teamIds.length === 0) return null;
 
   const dbTeams = await db
     .select()

@@ -69,7 +69,7 @@ const updateScorers = async () => {
 const updateFixtures = async () => {
   const todaysDate = new Date();
   const year = todaysDate.getFullYear();
-  const month = String(todaysDate.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+  const month = String(todaysDate.getMonth() + 1).padStart(2, "0");
   const day = String(todaysDate.getDate()).padStart(2, "0");
 
   const formattedDate = `${year}-${month}-${day}`;
@@ -80,15 +80,19 @@ const updateFixtures = async () => {
     }
   );
   const fixturesResponse = await response.json();
-  console.log(fixturesResponse);
-  const inserts: InsertFixture[] = fixturesResponse.map((fixture: any) => ({
-    id: parseInt(fixture.match_id),
-    homeTeam: parseInt(fixture.match_hometeam_id),
-    awayTeam: parseInt(fixture.match_awayteam_id),
-    homeGoals: fixture.match_hometeam_score,
-    awayGoals: fixture.match_awayteam_score,
-    date: new Date(fixture.match_date),
-  }));
+  const inserts: InsertFixture[] = fixturesResponse.map((fixture: any) => {
+    const matchDate = new Date(fixture.match_date);
+    const hours = parseInt(fixture.match_time.split(":")[0]);
+    matchDate.setUTCHours(hours + 1);
+    return {
+      id: parseInt(fixture.match_id),
+      homeTeam: parseInt(fixture.match_hometeam_id),
+      awayTeam: parseInt(fixture.match_awayteam_id),
+      homeGoals: fixture.match_hometeam_score,
+      awayGoals: fixture.match_awayteam_score,
+      date: matchDate,
+    };
+  });
 
   for (const fixture of inserts) {
     await db
