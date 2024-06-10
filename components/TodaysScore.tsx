@@ -23,7 +23,8 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { handleScoreBet } from "@/lib/actions/score";
-import { Table, TableBody, TableCell, TableRow } from "./ui/table";
+import { Table, TableBody } from "./ui/table";
+import MatchRow from "./MatchRow";
 
 const FormSchema = z.object({
   homeScore: z.coerce.number().nonnegative(),
@@ -69,35 +70,15 @@ const TodaysScore = ({
         {ownBet ? (
           <Table>
             <TableBody>
-              <TableRow>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Image
-                      src={betToday.teams.image}
-                      alt={betToday.teams.name}
-                      width={20}
-                      height={20}
-                    />
-                    {betToday.teams.name}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <p>{ownBet.homeGoals}</p>-<p>{ownBet.awayGoals}</p>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Image
-                      src={betToday.teams2.image}
-                      alt={betToday.teams2.name}
-                      width={20}
-                      height={20}
-                    />
-                    {betToday.teams2.name}
-                  </div>
-                </TableCell>
-              </TableRow>
+              <MatchRow
+                matchId={betToday.fixtures.id}
+                homeImage={betToday.teams.image}
+                homeName={betToday.teams.name}
+                homeScore={ownBet.homeGoals.toString()}
+                awayImage={betToday.teams2.image}
+                awayName={betToday.teams2.name}
+                awayScore={ownBet.awayGoals.toString()}
+              />
             </TableBody>
           </Table>
         ) : (

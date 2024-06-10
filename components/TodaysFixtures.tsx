@@ -6,8 +6,7 @@ import { Separator } from "./ui/separator";
 import { db, getMostPopularMatch } from "@/drizzle/db";
 import { fixtures, teams } from "@/drizzle/schema";
 import { inArray, sql } from "drizzle-orm";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
+import MatchRow from "./MatchRow";
 
 const TodaysFixtures = async () => {
   const givenDateString = "2024-06-14";
@@ -47,55 +46,29 @@ const TodaysFixtures = async () => {
           <TableBody>
             {todaysFixtures.map((match) => {
               return (
-                <TableRow
+                <MatchRow
                   key={match.id}
-                  className={cn(
-                    match.id === popularId
-                      ? "!border-2 border-primary after:content-['Bettor'] after:font-semibold after:text-primary after:absolute after:right-0 after:bottom-0"
-                      : "",
-                    "relative"
-                  )}
-                >
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Image
-                        src={
-                          dbTeams.find((team) => team.id === match.homeTeam)
-                            ?.image || ""
-                        }
-                        alt={
-                          dbTeams.find((team) => team.id === match.homeTeam)
-                            ?.name || ""
-                        }
-                        width={20}
-                        height={20}
-                      />
-                      {dbTeams.find((team) => team.id === match.homeTeam)?.name}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <p>{match.homeGoals}</p>-<p>{match.awayGoals}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center justify-end gap-2">
-                      {dbTeams.find((team) => team.id === match.awayTeam)?.name}
-                      <Image
-                        src={
-                          dbTeams.find((team) => team.id === match.awayTeam)
-                            ?.image || ""
-                        }
-                        alt={
-                          dbTeams.find((team) => team.id === match.awayTeam)
-                            ?.name || ""
-                        }
-                        width={20}
-                        height={20}
-                      />
-                    </div>
-                  </TableCell>
-                </TableRow>
+                  matchId={match.id}
+                  popularId={popularId}
+                  homeImage={
+                    dbTeams.find((team) => team.id === match.homeTeam)?.image ||
+                    ""
+                  }
+                  homeName={
+                    dbTeams.find((team) => team.id === match.homeTeam)?.name ||
+                    ""
+                  }
+                  homeScore={match.homeGoals || ""}
+                  awayScore={match.awayGoals || ""}
+                  awayImage={
+                    dbTeams.find((team) => team.id === match.awayTeam)?.image ||
+                    ""
+                  }
+                  awayName={
+                    dbTeams.find((team) => team.id === match.awayTeam)?.name ||
+                    ""
+                  }
+                />
               );
             })}
           </TableBody>
