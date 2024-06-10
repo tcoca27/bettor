@@ -95,11 +95,6 @@ const TodaysFixtures = async () => {
                       />
                     </div>
                   </TableCell>
-                  {/* {match.id === popularId && (
-                    <p className="absolute bottom-0 right-0 font-semibold text-primary">
-                      Bettor
-                    </p>
-                  )} */}
                 </TableRow>
               );
             })}
