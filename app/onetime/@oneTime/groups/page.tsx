@@ -14,11 +14,9 @@ const GroupStandingsPage = async () => {
     redirect("/join-house");
   }
   let selectedHouse = await user.getSelectedTeam();
-  console.log("before", selectedHouse);
   if (!selectedHouse) {
     selectedHouse = houses[0];
   }
-  console.log("after", selectedHouse);
   const groups = await db
     .selectDistinct({ group: teams.group })
     .from(teams)

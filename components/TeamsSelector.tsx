@@ -34,11 +34,9 @@ const TeamsSelector = () => {
 
   const updateSelectedTeam = async (value: string) => {
     const team = teams.find((team) => team.displayName === value);
-    console.log(">> team", team);
     if (team) {
       setSelectedTeam(team.displayName);
       await user.updateSelectedTeam(team);
-      user.getSelectedTeam().then((team) => console.log(">>", team));
       router.refresh();
     }
   };

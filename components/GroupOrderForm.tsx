@@ -32,8 +32,8 @@ const GroupOrderForm = ({
     <div className="flex flex-col items-center gap-4">
       <div className="flex w-full justify-between">
         Order the group stage:
-        <Button onClick={submitOrder} className="w-fit">
-          Submit
+        <Button onClick={submitOrder} disabled={isSubmitting} className="w-fit">
+          {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
       </div>
       <div className="flex flex-wrap justify-center gap-4 text-center">
