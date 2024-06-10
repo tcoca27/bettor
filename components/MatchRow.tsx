@@ -12,6 +12,7 @@ type MatchRowProps = {
   awayImage: string;
   awayName: string;
   awayScore: string;
+  displayName?: string | undefined | null;
 };
 
 const MatchRow = ({
@@ -23,6 +24,7 @@ const MatchRow = ({
   awayImage,
   awayName,
   awayScore,
+  displayName,
 }: MatchRowProps) => {
   return (
     <TableRow
@@ -50,6 +52,7 @@ const MatchRow = ({
           <Image src={awayImage} alt={awayName} width={20} height={20} />
         </div>
       </TableCell>
+      {displayName && <TableCell>{displayName}</TableCell>}
     </TableRow>
   );
 };

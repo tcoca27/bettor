@@ -1,7 +1,7 @@
 "use client";
 import { SelectFixture, SelectScoreBet, SelectTeam } from "@/drizzle/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -25,6 +25,7 @@ import Image from "next/image";
 import { handleScoreBet } from "@/lib/actions/score";
 import { Table, TableBody } from "./ui/table";
 import MatchRow from "./MatchRow";
+import { UserInfo } from "@/types";
 
 const FormSchema = z.object({
   homeScore: z.coerce.number().nonnegative(),
@@ -34,14 +35,21 @@ const FormSchema = z.object({
 const TodaysScore = ({
   betToday,
   ownBet,
+  bets,
+  members,
 }: {
   betToday: {
     fixtures: SelectFixture;
     teams: SelectTeam;
     teams2: SelectTeam;
   };
-  ownBet: SelectScoreBet | undefined;
+  ownBet: boolean;
+  bets: SelectScoreBet[];
+  members: UserInfo[] | null | undefined;
 }) => {
+  const isPassed = betToday.fixtures.date
+    ? betToday.fixtures.date < new Date()
+    : false;
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -58,6 +66,10 @@ const TodaysScore = ({
     );
   };
 
+  useEffect(() => {
+    console.log(">>>", ownBet, isPassed);
+  }, []);
+
   return (
     <Card className="h-fit px-8">
       <CardHeader>
@@ -67,18 +79,22 @@ const TodaysScore = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {ownBet ? (
+        {ownBet || isPassed ? (
           <Table>
             <TableBody>
-              <MatchRow
-                matchId={betToday.fixtures.id}
-                homeImage={betToday.teams.image}
-                homeName={betToday.teams.name}
-                homeScore={ownBet.homeGoals.toString()}
-                awayImage={betToday.teams2.image}
-                awayName={betToday.teams2.name}
-                awayScore={ownBet.awayGoals.toString()}
-              />
+              {bets.map((bet) => (
+                <MatchRow
+                  key={bet.id}
+                  matchId={betToday.fixtures.id}
+                  homeImage={betToday.teams.image}
+                  homeName={betToday.teams.name}
+                  homeScore={bet.homeGoals.toString()}
+                  awayImage={betToday.teams2.image}
+                  awayName={betToday.teams2.name}
+                  awayScore={bet.awayGoals.toString()}
+                  displayName={members?.find((m) => m.id === bet.voterId)?.name}
+                />
+              ))}
             </TableBody>
           </Table>
         ) : (

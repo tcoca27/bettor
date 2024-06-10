@@ -7,6 +7,7 @@ import { alias } from "drizzle-orm/pg-core";
 import { stackServerApp } from "@/stack";
 import { redirect } from "next/navigation";
 import TodaysScore from "@/components/TodaysScore";
+import { UserInfo } from "@/types";
 
 const OngoingPage = async () => {
   const user = await stackServerApp.getUser({ or: "redirect" });
@@ -73,27 +74,39 @@ const OngoingPage = async () => {
       )
     );
 
-  const ownBet = await db
+  const bets = await db
     .select()
     .from(scoreBet)
     .where(
       and(
         eq(scoreBet.fixtureId, betToday?.fixtures.id),
-        and(
-          eq(scoreBet.houseId, selectedHouse.id),
-          eq(scoreBet.voterId, user.id)
-        )
+        eq(scoreBet.houseId, selectedHouse.id)
       )
     );
 
+  const members = await stackServerApp
+    .getTeam(selectedHouse.id)
+    .then((team) => team?.listMembers())
+    .then((members) =>
+      members?.map((member) => ({
+        id: member.userId,
+        name: member.displayName,
+      }))
+    );
+
   return (
-    <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-4 py-8 max-md:items-center max-sm:px-4 md:flex-row">
+    <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-4 py-8 max-md:items-center max-sm:px-4 md:flex-row md:justify-center">
       <PickTomorrowForm
         tomorrowFixtures={tomorrowFixtures}
         voted={votes.length > 0}
       ></PickTomorrowForm>
       {betToday && (
-        <TodaysScore betToday={betToday} ownBet={ownBet[0]}></TodaysScore>
+        <TodaysScore
+          betToday={betToday}
+          ownBet={!!bets.find((bet) => bet.voterId === user.id)}
+          bets={bets}
+          members={members}
+        ></TodaysScore>
       )}
     </main>
   );
