@@ -14,7 +14,7 @@ const GroupStandingsPage = async () => {
     redirect("/join-house");
   }
   let selectedHouse = await user.getSelectedTeam();
-  console.log(selectedHouse);
+  console.log("before", selectedHouse);
   if (!selectedHouse) {
     selectedHouse = houses[0];
   }

@@ -29,22 +29,25 @@ const TeamsSelector = () => {
       user.updateSelectedTeam(teams[0]);
     }
   }, []);
+
   const router = useRouter();
+
+  const updateSelectedTeam = async (value: string) => {
+    const team = teams.find((team) => team.displayName === value);
+    console.log(">> team", team);
+    if (team) {
+      setSelectedTeam(team.displayName);
+      await user.updateSelectedTeam(team);
+      user.getSelectedTeam().then((team) => console.log(">>", team));
+      router.refresh();
+    }
+  };
 
   return teams.length > 0 ? (
     <>
       <Select
         value={selectedTeam || ""}
-        onValueChange={(value) => {
-          setSelectedTeam(
-            teams.find((team) => team.displayName === value)?.displayName ||
-              null
-          );
-          user.updateSelectedTeam(
-            teams.find((team) => team.displayName === value) || null
-          );
-          router.refresh();
-        }}
+        onValueChange={(value) => updateSelectedTeam(value)}
       >
         <SelectTrigger>
           <SelectValue placeholder={"Select House"} />

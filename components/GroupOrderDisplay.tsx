@@ -35,7 +35,6 @@ const GroupOrderDisplay = ({
                           groupVote.group_order.group === group.group
                       )
                       .map((groupVote) => {
-                        console.log(groupVote);
                         return (
                           <TableRow key={groupVote.group_order.id}>
                             <TableCell>
