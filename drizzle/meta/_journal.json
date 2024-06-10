@@ -43,6 +43,13 @@
       "when": 1718015285492,
       "tag": "0005_group_order_tbl",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1718032405920,
+      "tag": "0006_score_bet_tbl",
+      "breakpoints": true
     }
   ]
 }

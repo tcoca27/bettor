@@ -1,20 +1,27 @@
 "use server";
+
 import { db } from "@/drizzle/db";
-import { fixtureVotes } from "@/drizzle/schema";
 import { stackServerApp } from "@/stack";
+import { scoreBet } from "@/drizzle/schema";
 import { revalidatePath } from "next/cache";
 
-export const votePopularFixture = async (fixtureId: number) => {
+export const handleScoreBet = async (
+  fixtureId: number,
+  homeScore: number,
+  awayScore: number
+) => {
   const user = await stackServerApp.getUser({ or: "redirect" });
-  const team = await user.getSelectedTeam();
-  if (!team) {
+  const house = await user.getSelectedTeam();
+  if (!house) {
     throw new Error("Select a house first.");
   }
   try {
-    await db.insert(fixtureVotes).values({
+    await db.insert(scoreBet).values({
       fixtureId,
+      homeGoals: homeScore,
+      awayGoals: awayScore,
       voterId: user.id,
-      houseId: team.id,
+      houseId: house.id,
     });
     revalidatePath("/ongoing");
   } catch (error) {

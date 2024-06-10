@@ -48,7 +48,7 @@ const PickTomorrowForm = ({
   };
 
   return (
-    <Card className="px-8">
+    <Card className="h-fit px-8">
       <CardHeader>
         <CardTitle>{"Tomorrow's Bet"}</CardTitle>
         <CardDescription>

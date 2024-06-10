@@ -97,3 +97,16 @@ export const groupOrder = pgTable("group_order", {
 
 export type InsertGroupOrder = typeof groupOrder.$inferInsert;
 export type SelectGroupOrder = typeof groupOrder.$inferSelect;
+
+export const scoreBet = pgTable("score_bet", {
+  id: serial("id").primaryKey(),
+  homeGoals: integer("home_goals").notNull(),
+  awayGoals: integer("away_goals").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  voterId: text("voter_id").notNull(),
+  houseId: text("house_id").notNull(),
+  fixtureId: integer("fixture_id").references(() => fixtures.id),
+});
+
+export type InsertScoreBet = typeof scoreBet.$inferInsert;
+export type SelectScoreBet = typeof scoreBet.$inferSelect;
