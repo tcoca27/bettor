@@ -2,6 +2,7 @@
 import { db } from "@/drizzle/db";
 import { winnerVotes } from "@/drizzle/schema";
 import { stackServerApp } from "@/stack";
+import { revalidatePath } from "next/cache";
 
 export const betWinner = async (teamId: number) => {
   const user = await stackServerApp.getUser({ or: "redirect" });
@@ -15,6 +16,7 @@ export const betWinner = async (teamId: number) => {
       voterId: user.id,
       houseId: team.id,
     });
+    revalidatePath("/onetime/winner");
   } catch (error) {
     throw new Error("Team not found");
   }

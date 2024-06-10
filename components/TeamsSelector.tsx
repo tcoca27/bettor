@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { useRouter } from "next/navigation";
 
 const TeamsSelector = () => {
   const user = useUser({ or: "redirect" });
@@ -28,6 +29,7 @@ const TeamsSelector = () => {
       user.updateSelectedTeam(teams[0]);
     }
   }, []);
+  const router = useRouter();
 
   return teams.length > 0 ? (
     <>
@@ -41,6 +43,7 @@ const TeamsSelector = () => {
           user.updateSelectedTeam(
             teams.find((team) => team.displayName === value) || null
           );
+          router.refresh();
         }}
       >
         <SelectTrigger>

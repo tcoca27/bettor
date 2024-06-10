@@ -84,3 +84,16 @@ export const winnerVotes = pgTable("winner_votes", {
 
 export type InsertWinnerVote = typeof winnerVotes.$inferInsert;
 export type SelectWinnerVote = typeof winnerVotes.$inferSelect;
+
+export const groupOrder = pgTable("group_order", {
+  id: serial("id").primaryKey(),
+  teamId: integer("team_id").references(() => teams.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  voterId: text("voter_id").notNull(),
+  houseId: text("house_id").notNull(),
+  group: text("group").notNull(),
+  position: text("position").notNull(),
+});
+
+export type InsertGroupOrder = typeof groupOrder.$inferInsert;
+export type SelectGroupOrder = typeof groupOrder.$inferSelect;
