@@ -1,7 +1,7 @@
 "use server";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Table, TableRow, TableBody, TableCell } from "./ui/table";
+import { Table, TableBody } from "./ui/table";
 import { Separator } from "./ui/separator";
 import { db, getMostPopularMatch } from "@/drizzle/db";
 import { fixtures, teams } from "@/drizzle/schema";
@@ -28,7 +28,7 @@ const TodaysFixtures = async () => {
   const dbTeams = await db
     .select()
     .from(teams)
-    .where(inArray(teams.id, Array.from(teamIds)));
+    .where(inArray(teams.id, Array.from(teamIds) as number[]));
 
   const popular = await getMostPopularMatch(
     todaysFixtures.map((fixture) => fixture.id)

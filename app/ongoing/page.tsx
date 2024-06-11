@@ -7,7 +7,6 @@ import { alias } from "drizzle-orm/pg-core";
 import { stackServerApp } from "@/stack";
 import { redirect } from "next/navigation";
 import TodaysScore from "@/components/TodaysScore";
-import { UserInfo } from "@/types";
 
 const OngoingPage = async () => {
   const user = await stackServerApp.getUser({ or: "redirect" });
@@ -79,7 +78,7 @@ const OngoingPage = async () => {
     .from(scoreBet)
     .where(
       and(
-        eq(scoreBet.fixtureId, betToday?.fixtures.id),
+        eq(scoreBet.fixtureId, betToday?.fixtures.id as number),
         eq(scoreBet.houseId, selectedHouse.id)
       )
     );
