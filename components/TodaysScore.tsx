@@ -1,5 +1,5 @@
 "use client";
-import { SelectFixture, SelectTeam } from "@/drizzle/schema";
+import { SelectFixture, SelectScoreBet, SelectTeam } from "@/drizzle/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -32,6 +32,7 @@ const FormSchema = z.object({
 const TodaysScore = ({
   betToday,
   ownBet,
+  bets,
   isUserTurn,
 }: {
   betToday: {
@@ -40,6 +41,7 @@ const TodaysScore = ({
     teams2: SelectTeam;
   };
   ownBet: boolean;
+  bets: SelectScoreBet[];
   isUserTurn: boolean;
 }) => {
   const isPassed = betToday.fixtures.date
@@ -54,11 +56,18 @@ const TodaysScore = ({
   });
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    await handleScoreBet(
-      betToday.fixtures.id,
-      values.homeScore,
-      values.awayScore
-    );
+    try {
+      await handleScoreBet(
+        betToday.fixtures.id,
+        values.homeScore,
+        values.awayScore,
+        bets
+      );
+    } catch (error) {
+      form.setError("root", {
+        message: "Something went wrong. Pay attention. No duplicate scores.",
+      });
+    }
   };
 
   return (
@@ -148,6 +157,7 @@ const TodaysScore = ({
                   )}
                 />
               </div>
+              <FormMessage>{form.formState.errors.root?.message}</FormMessage>
               <Button type="submit" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? "Submitting..." : "Submit"}
               </Button>

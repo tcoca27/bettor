@@ -2,18 +2,26 @@
 
 import { db } from "@/drizzle/db";
 import { stackServerApp } from "@/stack";
-import { scoreBet } from "@/drizzle/schema";
+import { SelectScoreBet, scoreBet } from "@/drizzle/schema";
 import { revalidatePath } from "next/cache";
 
 export const handleScoreBet = async (
   fixtureId: number,
   homeScore: number,
-  awayScore: number
+  awayScore: number,
+  bets: SelectScoreBet[]
 ) => {
   const user = await stackServerApp.getUser({ or: "redirect" });
   const house = await user.getSelectedTeam();
   if (!house) {
     throw new Error("Select a house first.");
+  }
+  if (
+    bets.some(
+      (bet) => bet.homeGoals === homeScore && bet.awayGoals === awayScore
+    )
+  ) {
+    throw new Error("Score was already bet.");
   }
   try {
     await db.insert(scoreBet).values({

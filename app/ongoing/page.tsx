@@ -134,6 +134,7 @@ const OngoingPage = async () => {
           <TodaysScore
             betToday={betToday}
             ownBet={!!bets.find((bet) => bet.voterId === user.id)}
+            bets={bets}
             isUserTurn={isUserTurn}
           ></TodaysScore>
         )}
