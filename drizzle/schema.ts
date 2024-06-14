@@ -116,7 +116,7 @@ export const usersOrder = pgTable("users_order", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   userId: text("user_id").notNull(),
   houseId: text("house_id").notNull(),
-  position: text("position").notNull(),
+  position: integer("position").notNull(),
 });
 
 export type InsertUsersOrder = typeof usersOrder.$inferInsert;

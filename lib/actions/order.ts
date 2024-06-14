@@ -27,7 +27,7 @@ export const createOrder = async (memberIds: string[], houseName: string) => {
     (memberId: string, index: number) => ({
       houseId: houseName,
       userId: memberId,
-      position: positions[index].toString(),
+      position: positions[index],
     })
   );
   await db.insert(usersOrder).values(inserts);
@@ -38,7 +38,7 @@ export const updateOrder = async (memberIds: string[], houseName: string) => {
   memberIds.forEach(async (member: string, index: number) => {
     await db
       .update(usersOrder)
-      .set({ position: (index + 1).toString() })
+      .set({ position: index + 1 })
       .where(
         and(eq(usersOrder.houseId, houseName), eq(usersOrder.userId, member))
       );
