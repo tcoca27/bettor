@@ -110,3 +110,14 @@ export const scoreBet = pgTable("score_bet", {
 
 export type InsertScoreBet = typeof scoreBet.$inferInsert;
 export type SelectScoreBet = typeof scoreBet.$inferSelect;
+
+export const usersOrder = pgTable("users_order", {
+  id: serial("id").primaryKey(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  userId: text("user_id").notNull(),
+  houseId: text("house_id").notNull(),
+  position: text("position").notNull(),
+});
+
+export type InsertUsersOrder = typeof usersOrder.$inferInsert;
+export type SelectUsersOrder = typeof usersOrder.$inferSelect;
