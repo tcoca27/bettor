@@ -6,7 +6,10 @@ import { db } from "@/drizzle/db";
 import { usersOrder } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 
-const ALLOWED_USER_IDS = ["8ee9087a-ad5c-4832-a050-8ea940748d36"];
+const ALLOWED_USER_IDS = [
+  "8ee9087a-ad5c-4832-a050-8ea940748d36",
+  "c7783624-c08b-4e4c-be91-ec5f35f10eaa",
+];
 
 const AdminPage = async () => {
   const user = await stackServerApp.getUser({ or: "redirect" });
