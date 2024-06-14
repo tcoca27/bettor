@@ -64,6 +64,13 @@
       "when": 1718371976114,
       "tag": "0008_top_scorer_tbl",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1718374729620,
+      "tag": "0009_position_col",
+      "breakpoints": true
     }
   ]
 }

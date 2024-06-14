@@ -1,0 +1,1 @@
+ALTER TABLE "users_order" ALTER COLUMN "position" TYPE integer USING (position::integer);
