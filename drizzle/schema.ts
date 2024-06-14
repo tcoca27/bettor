@@ -121,3 +121,15 @@ export const usersOrder = pgTable("users_order", {
 
 export type InsertUsersOrder = typeof usersOrder.$inferInsert;
 export type SelectUsersOrder = typeof usersOrder.$inferSelect;
+
+export const topScorerBet = pgTable("top_scorer_bet", {
+  id: serial("id").primaryKey(),
+  scorerName: text("scorer_name").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  voterId: text("voter_id").notNull(),
+  houseId: text("house_id").notNull(),
+  image: text("image").notNull(),
+});
+
+export type InsertTopScorerBet = typeof topScorerBet.$inferInsert;
+export type SelectTopScorerBet = typeof topScorerBet.$inferSelect;
