@@ -133,3 +133,14 @@ export const topScorerBet = pgTable("top_scorer_bet", {
 
 export type InsertTopScorerBet = typeof topScorerBet.$inferInsert;
 export type SelectTopScorerBet = typeof topScorerBet.$inferSelect;
+
+export const romaniaBet = pgTable("romania_bet", {
+  id: serial("id").primaryKey(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  voterId: text("voter_id").notNull(),
+  houseId: text("house_id").notNull(),
+  prediction: text("prediction").notNull(),
+});
+
+export type InsertRomaniaBet = typeof romaniaBet.$inferInsert;
+export type SelectRomaniaBet = typeof romaniaBet.$inferSelect;

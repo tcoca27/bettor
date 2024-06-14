@@ -16,7 +16,9 @@ const OneTimePageLayout = ({ oneTime }: { oneTime: React.ReactNode }) => {
           <Link href={"/onetime/groups"} className="w-full">
             <TabsTrigger value="groups">Groups Standings</TabsTrigger>
           </Link>
-          <TabsTrigger value="romania">Romania</TabsTrigger>
+          <Link href={"/onetime/romania"} className="w-full">
+            <TabsTrigger value="romania">Romania</TabsTrigger>
+          </Link>
         </TabsList>
       </Tabs>
       <div className="mt-8">{oneTime}</div>

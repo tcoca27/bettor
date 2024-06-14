@@ -26,14 +26,19 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import players from "@/constants/topScorers.json";
-import { betScorer } from "@/lib/actions/scorer";
+import { betRomania } from "@/lib/actions/romania";
 
 const formSchema = z.object({
-  scorer: z.string(),
-  image: z.string(),
+  prediction: z.enum([
+    "Group Stage",
+    "Round of 16",
+    "Quarter Finals",
+    "Semi Finals",
+    "Finals",
+  ]),
 });
+
+const PredictionStages = formSchema.shape.prediction._def.values;
 
 const SelectScorerForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,9 +47,9 @@ const SelectScorerForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await betScorer(values);
+      await betRomania(values.prediction);
     } catch (error) {
-      form.setError("scorer", {
+      form.setError("prediction", {
         message: "An error occurred. Please try again.",
       });
     }
@@ -56,7 +61,7 @@ const SelectScorerForm = () => {
         <div className="flex gap-4">
           <FormField
             control={form.control}
-            name="scorer"
+            name="prediction"
             render={({ field }) => (
               <FormItem>
                 <Popover>
@@ -70,42 +75,34 @@ const SelectScorerForm = () => {
                           !field.value && "text-muted-foreground"
                         )}
                       >
-                        {field.value ? <>{field.value}</> : "Select Scorer"}
+                        {field.value ? <>{field.value}</> : "Select Stage"}
                         <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
                   <PopoverContent className="w-[200px] p-0">
                     <Command>
-                      <CommandInput placeholder="Search player..." />
+                      <CommandInput placeholder="Search stage..." />
                       <CommandList>
-                        <CommandEmpty>No players found.</CommandEmpty>
+                        <CommandEmpty>No stage found.</CommandEmpty>
                         <CommandGroup>
-                          {players.map((player) => (
+                          {PredictionStages.map((stage) => (
                             <CommandItem
-                              value={player.name}
-                              key={player.name}
+                              value={stage}
+                              key={stage}
                               onSelect={() => {
-                                form.setValue("scorer", player.name);
-                                form.setValue("image", player.badge);
+                                form.setValue("prediction", stage);
                               }}
                             >
                               <Check
                                 className={cn(
                                   "mr-2 h-4 w-4",
-                                  player.name === field.value
+                                  stage === field.value
                                     ? "opacity-100"
                                     : "opacity-0"
                                 )}
                               />
-                              <Image
-                                className="mr-2"
-                                src={player.badge}
-                                alt={player.name}
-                                width={20}
-                                height={20}
-                              ></Image>
-                              {player.name}
+                              {stage}
                             </CommandItem>
                           ))}
                         </CommandGroup>
