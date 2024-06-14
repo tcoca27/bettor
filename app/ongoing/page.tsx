@@ -14,6 +14,8 @@ import { stackServerApp } from "@/stack";
 import { redirect } from "next/navigation";
 import TodaysScore from "@/components/TodaysScore";
 import OtherBets from "@/components/OtherBets";
+import { ableToVote } from "@/lib/utils";
+import TodaysOrder from "@/components/TodaysOrder";
 
 const OngoingPage = async () => {
   const user = await stackServerApp.getUser({ or: "redirect" });
@@ -108,17 +110,18 @@ const OngoingPage = async () => {
     .from(usersOrder)
     .where(eq(usersOrder.houseId, selectedHouse.id))
     .orderBy(usersOrder.position);
-  const userIndex = userOrder.findIndex((order) => order.userId === user.id);
-  if (userIndex === 0) {
-    isUserTurn = true;
-  }
-  const prevUser = userOrder[userIndex - 1];
-  console.log(prevUser);
-  if (bets.find((bet) => bet.voterId === prevUser.userId)) {
-    isUserTurn = true;
-  }
 
-  console.log(isUserTurn);
+  let usersToVote = 0;
+  userOrder.forEach((order, index) => {
+    if (order.userId === user.id && (index === 0 || ableToVote(usersToVote))) {
+      isUserTurn = true;
+    }
+    if (order.userId !== user.id) {
+      if (!bets.find((bet) => bet.voterId === order.userId)) {
+        usersToVote++;
+      }
+    }
+  });
 
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-4 py-8 max-md:items-center max-sm:px-4 md:flex-row md:justify-center">
@@ -137,6 +140,7 @@ const OngoingPage = async () => {
         {betToday && (
           <OtherBets betToday={betToday} bets={bets} members={members} />
         )}
+        <TodaysOrder userOrder={userOrder} members={members} />
       </div>
     </main>
   );
