@@ -25,6 +25,7 @@ const TodaysOrder = ({
                   {members?.find((m) => m.id === order.userId)?.name ||
                     order.userId}
                 </TableCell>
+                <TableCell>{10 + index}:00</TableCell>
               </TableRow>
             ))}
           </TableBody>
