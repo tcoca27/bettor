@@ -31,7 +31,8 @@ const GroupStandingsPage = async () => {
         eq(groupOrder.voterId, user.id)
       )
     )
-    .innerJoin(teams, eq(groupOrder.teamId, teams.id));
+    .innerJoin(teams, eq(groupOrder.teamId, teams.id))
+    .orderBy(groupOrder.position);
 
   return (
     <>
