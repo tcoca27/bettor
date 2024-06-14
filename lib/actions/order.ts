@@ -20,6 +20,7 @@ const generateRandomOrder = (numberOfMembers: number) => {
 };
 
 export const createOrder = async (memberIds: string[], houseName: string) => {
+  await db.delete(usersOrder).where(eq(usersOrder.houseId, houseName));
   const positions = generateRandomOrder(memberIds.length);
 
   const inserts: InsertUsersOrder[] = memberIds.map(

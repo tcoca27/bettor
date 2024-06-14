@@ -59,7 +59,7 @@ const MemberOrder = ({
     }
   };
   return (
-    <Card className="h-[390px] w-[405px] max-sm:w-[360px]">
+    <Card className="w-[405px] max-sm:w-[360px]">
       <CardHeader>
         <CardTitle>{"Users Order"}</CardTitle>
       </CardHeader>

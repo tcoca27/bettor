@@ -11,7 +11,7 @@ const TodaysOrder = ({
   userOrder: SelectUsersOrder[];
 }) => {
   return (
-    <Card>
+    <Card className="h-fit px-8">
       <CardHeader>
         <CardTitle>{"Today's Order"}</CardTitle>
       </CardHeader>

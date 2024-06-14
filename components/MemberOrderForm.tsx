@@ -38,8 +38,9 @@ const MemberOrderForm = ({
 
   return (
     <div className="flex flex-col items-center gap-4">
+      <Button onClick={generateOrder}>Regenerate Order</Button>
       <div className="flex w-full justify-between">
-        Order the group stage:
+        Reorder members:
         <Button onClick={submitOrder} disabled={isSubmitting} className="w-fit">
           {isSubmitting ? "Submitting..." : "Submit"}
         </Button>

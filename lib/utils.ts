@@ -8,6 +8,5 @@ export function cn(...inputs: ClassValue[]) {
 export const ableToVote = (usersToVote: number) => {
   const today = new Date();
   today.setHours(10 + usersToVote, 0, 0, 0);
-  console.log(today, new Date());
   return new Date() > today;
 };
