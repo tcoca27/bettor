@@ -1,4 +1,10 @@
-import { fixtureVotes, fixtures, scoreBet, teams } from "@/drizzle/schema";
+import {
+  fixtureVotes,
+  fixtures,
+  scoreBet,
+  teams,
+  usersOrder,
+} from "@/drizzle/schema";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { db, getMostPopularMatchByHouse } from "@/drizzle/db";
 import React from "react";
@@ -7,6 +13,7 @@ import { alias } from "drizzle-orm/pg-core";
 import { stackServerApp } from "@/stack";
 import { redirect } from "next/navigation";
 import TodaysScore from "@/components/TodaysScore";
+import OtherBets from "@/components/OtherBets";
 
 const OngoingPage = async () => {
   const user = await stackServerApp.getUser({ or: "redirect" });
@@ -81,7 +88,8 @@ const OngoingPage = async () => {
         eq(scoreBet.fixtureId, betToday?.fixtures.id as number),
         eq(scoreBet.houseId, selectedHouse.id)
       )
-    );
+    )
+    .orderBy(scoreBet.createdAt);
 
   const members = await stackServerApp
     .getTeam(selectedHouse.id)
@@ -93,20 +101,43 @@ const OngoingPage = async () => {
       }))
     );
 
+  let isUserTurn = false;
+
+  const userOrder = await db
+    .select()
+    .from(usersOrder)
+    .where(eq(usersOrder.houseId, selectedHouse.id))
+    .orderBy(usersOrder.position);
+  const userIndex = userOrder.findIndex((order) => order.userId === user.id);
+  if (userIndex === 0) {
+    isUserTurn = true;
+  }
+  const prevUser = userOrder[userIndex - 1];
+  console.log(prevUser);
+  if (bets.find((bet) => bet.voterId === prevUser.userId)) {
+    isUserTurn = true;
+  }
+
+  console.log(isUserTurn);
+
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-4 py-8 max-md:items-center max-sm:px-4 md:flex-row md:justify-center">
       <PickTomorrowForm
         tomorrowFixtures={tomorrowFixtures}
         voted={votes.length > 0}
       ></PickTomorrowForm>
-      {betToday && (
-        <TodaysScore
-          betToday={betToday}
-          ownBet={!!bets.find((bet) => bet.voterId === user.id)}
-          bets={bets}
-          members={members}
-        ></TodaysScore>
-      )}
+      <div className="space-y-4">
+        {betToday && (
+          <TodaysScore
+            betToday={betToday}
+            ownBet={!!bets.find((bet) => bet.voterId === user.id)}
+            isUserTurn={isUserTurn}
+          ></TodaysScore>
+        )}
+        {betToday && (
+          <OtherBets betToday={betToday} bets={bets} members={members} />
+        )}
+      </div>
     </main>
   );
 };

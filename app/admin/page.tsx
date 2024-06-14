@@ -35,9 +35,6 @@ const AdminPage = async () => {
     .where(eq(usersOrder.houseId, selectedHouse.id))
     .orderBy(usersOrder.position);
 
-  console.log(currentOrder);
-  console.log(members);
-
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col items-center gap-4 py-8 max-sm:px-4">
       <h1>Admin Page</h1>
