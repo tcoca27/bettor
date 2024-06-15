@@ -6,7 +6,9 @@ import {
   scorers,
   InsertFixture,
   fixtures,
+  usersOrder,
 } from "@/drizzle/schema";
+import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 const updateTeams = async () => {
@@ -102,7 +104,33 @@ const updateFixtures = async () => {
   }
 };
 
+const rotateOrders = async () => {
+  const houseIds = await db
+    .selectDistinct({ houseId: usersOrder.houseId })
+    .from(usersOrder);
+  for (const houseId of houseIds) {
+    const memberIds = await db
+      .select({ userId: usersOrder.userId })
+      .from(usersOrder)
+      .where(eq(usersOrder.houseId, houseId.houseId))
+      .orderBy(usersOrder.position);
+
+    memberIds.forEach(async (memberId, index) => {
+      await db
+        .update(usersOrder)
+        .set({ position: index === 0 ? memberIds.length - 1 : index - 1 })
+        .where(
+          and(
+            eq(usersOrder.houseId, houseId.houseId),
+            eq(usersOrder.userId, memberId.userId)
+          )
+        );
+    });
+  }
+};
+
 export const GET = async () => {
+  await rotateOrders();
   await updateTeams();
   await updateScorers();
   await updateFixtures();
