@@ -71,7 +71,7 @@ const TodaysScore = ({
   };
 
   return (
-    <Card className="h-fit px-8">
+    <Card className="h-fit">
       <CardHeader>
         <CardTitle>{"Today's Bet"}</CardTitle>
         <CardDescription>

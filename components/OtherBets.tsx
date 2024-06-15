@@ -26,7 +26,7 @@ const OtherBets = ({
   members: UserInfo[] | null | undefined;
 }) => {
   return (
-    <Card className="h-fit px-8">
+    <Card className="h-fit max-sm:w-[360px]">
       <CardHeader>
         <CardTitle>{"Today's Bet"}</CardTitle>
         <CardDescription>

@@ -13,6 +13,5 @@ export const ableToVote = (usersToVote: number) => {
   } else {
     today.setHours(7 + usersToVote, 0, 0, 0);
   }
-  console.log(new Date(), today, new Date() > today);
   return new Date() > today;
 };
