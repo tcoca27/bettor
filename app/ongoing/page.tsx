@@ -112,11 +112,16 @@ const OngoingPage = async () => {
     .orderBy(usersOrder.position);
 
   let usersToVote = 0;
+  let hours = 0;
   userOrder.forEach((order, index) => {
-    if (order.userId === user.id && (index === 0 || ableToVote(usersToVote))) {
+    if (
+      order.userId === user.id &&
+      (index === 0 || usersToVote === 0 || ableToVote(hours))
+    ) {
       isUserTurn = true;
     }
     if (order.userId !== user.id) {
+      hours++;
       if (!bets.find((bet) => bet.voterId === order.userId)) {
         usersToVote++;
       }
