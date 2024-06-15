@@ -11,6 +11,8 @@ import {
 import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 const updateTeams = async () => {
   const response = await fetch(
     `https://apiv3.apifootball.com/?action=get_standings&league_id=1&APIkey=${process.env.API_FOOTBALL_KEY}`,
