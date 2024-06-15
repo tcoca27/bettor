@@ -2,7 +2,7 @@ import "@/drizzle/envConfig";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import { sql } from "@vercel/postgres";
 import * as schema from "./schema";
-import { count, inArray, and, eq } from "drizzle-orm";
+import { count, inArray, and, eq, desc } from "drizzle-orm";
 
 export const db = drizzle(sql, { schema });
 
@@ -35,5 +35,6 @@ export const getMostPopularMatchByHouse = async (
       )
     )
     .groupBy(schema.fixtureVotes.fixtureId)
+    .orderBy(({ votes }) => desc(votes))
     .limit(1);
 };
