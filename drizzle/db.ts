@@ -15,6 +15,7 @@ export const getMostPopularMatch = async (fixtureIds: number[]) => {
     .from(schema.fixtureVotes)
     .where(inArray(schema.fixtureVotes.fixtureId, fixtureIds))
     .groupBy(schema.fixtureVotes.fixtureId)
+    .orderBy(({ votes }) => desc(votes))
     .limit(1);
 };
 
