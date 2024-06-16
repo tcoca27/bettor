@@ -6,6 +6,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import React from "react";
 import Header from "@/components/Header";
+import { Analytics } from "@vercel/analytics/react";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
           <StackTheme>
             <Header />
             {children}
+            <Analytics />
           </StackTheme>
         </StackProvider>
       </body>
