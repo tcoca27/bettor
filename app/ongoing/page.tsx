@@ -17,6 +17,7 @@ import TodaysScore from "@/components/TodaysScore";
 import OtherBets from "@/components/OtherBets";
 import { ableToVote } from "@/lib/utils";
 import TodaysOrder from "@/components/TodaysOrder";
+import YesterdayWinner from "@/components/YesterdayWinner";
 
 const OngoingPage = async () => {
   const user = await stackServerApp.getUser({ or: "redirect" });
@@ -144,10 +145,13 @@ const OngoingPage = async () => {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-4 py-8 max-md:items-center max-sm:px-4 md:flex-row md:justify-center">
-      <PickTomorrowForm
-        tomorrowFixtures={tomorrowFixtures}
-        voted={votes.length > 0}
-      ></PickTomorrowForm>
+      <div className="space-y-4">
+        <PickTomorrowForm
+          tomorrowFixtures={tomorrowFixtures}
+          voted={votes.length > 0}
+        ></PickTomorrowForm>
+        <YesterdayWinner members={members} houseId={selectedHouse.id} />
+      </div>
       <div className="space-y-4">
         {betToday && (
           <TodaysScore
