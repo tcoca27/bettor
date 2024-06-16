@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Table, TableRow, TableBody } from "../ui/table";
 import { Separator } from "../ui/separator";
+import { Skeleton } from "../ui/skeleton";
 
 const TodaysFixturesSkeleton = () => {
   return (
@@ -13,7 +14,9 @@ const TodaysFixturesSkeleton = () => {
       <CardContent className="mt-4">
         <Table>
           <TableBody>
-            <TableRow>Loading Match Data...</TableRow>
+            <TableRow>
+              <Skeleton className="h-4 w-[250px]" />
+            </TableRow>
           </TableBody>
         </Table>
       </CardContent>
