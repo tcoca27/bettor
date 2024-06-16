@@ -144,3 +144,15 @@ export const romaniaBet = pgTable("romania_bet", {
 
 export type InsertRomaniaBet = typeof romaniaBet.$inferInsert;
 export type SelectRomaniaBet = typeof romaniaBet.$inferSelect;
+
+export const wildcards = pgTable("wildcards", {
+  id: serial("id").primaryKey(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  voterId: text("voter_id").notNull(),
+  houseId: text("house_id").notNull(),
+  wildcards: text("wildcards").notNull(),
+  stage: text("stage").notNull(),
+});
+
+export type InsertWildcard = typeof wildcards.$inferInsert;
+export type SelectWildcard = typeof wildcards.$inferSelect;

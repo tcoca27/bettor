@@ -18,15 +18,18 @@ import {
   FormControl,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { handleScoreBet } from "@/lib/actions/score";
+import { Switch } from "./ui/switch";
 
 const FormSchema = z.object({
   homeScore: z.coerce.number().nonnegative(),
   awayScore: z.coerce.number().nonnegative(),
+  wildcard: z.boolean().default(false),
 });
 
 const TodaysScore = ({
@@ -34,6 +37,7 @@ const TodaysScore = ({
   ownBet,
   bets,
   isUserTurn,
+  wildcardsLeft,
 }: {
   betToday: {
     fixtures: SelectFixture;
@@ -43,6 +47,7 @@ const TodaysScore = ({
   ownBet: boolean;
   bets: SelectScoreBet[];
   isUserTurn: boolean;
+  wildcardsLeft: number;
 }) => {
   const isPassed = betToday.fixtures.date
     ? betToday.fixtures.date < new Date()
@@ -61,7 +66,9 @@ const TodaysScore = ({
         betToday.fixtures.id,
         values.homeScore,
         values.awayScore,
-        bets
+        bets,
+        values.wildcard,
+        wildcardsLeft
       );
     } catch (error) {
       form.setError("root", {
@@ -90,7 +97,29 @@ const TodaysScore = ({
         ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="flex flex-col items-center gap-2 sm:flex-row">
+              <FormField
+                control={form.control}
+                name="wildcard"
+                disabled={wildcardsLeft === 0}
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">Wildcard</FormLabel>
+                      <FormDescription>
+                        You have {wildcardsLeft} wildcards left in this stage.
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={wildcardsLeft === 0}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <div className="flex flex-col items-center justify-center gap-2 sm:flex-row">
                 <FormField
                   control={form.control}
                   name="homeScore"

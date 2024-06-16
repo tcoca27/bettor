@@ -78,6 +78,13 @@
       "when": 1718375700017,
       "tag": "0010_romania_tbl",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1718564974192,
+      "tag": "0011_wildcard_tbl",
+      "breakpoints": true
     }
   ]
 }

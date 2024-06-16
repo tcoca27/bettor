@@ -4,6 +4,7 @@ import {
   scoreBet,
   teams,
   usersOrder,
+  wildcards,
 } from "@/drizzle/schema";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { db, getMostPopularMatchByHouse } from "@/drizzle/db";
@@ -128,6 +129,19 @@ const OngoingPage = async () => {
     }
   });
 
+  const dbWildcards = await db
+    .select()
+    .from(wildcards)
+    .where(
+      and(
+        eq(wildcards.stage, "Groups"),
+        and(
+          eq(wildcards.houseId, selectedHouse.id),
+          eq(wildcards.voterId, user.id)
+        )
+      )
+    );
+
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-4 py-8 max-md:items-center max-sm:px-4 md:flex-row md:justify-center">
       <PickTomorrowForm
@@ -141,6 +155,7 @@ const OngoingPage = async () => {
             ownBet={!!bets.find((bet) => bet.voterId === user.id)}
             bets={bets}
             isUserTurn={isUserTurn}
+            wildcardsLeft={3 - dbWildcards.length}
           ></TodaysScore>
         )}
         {betToday && (
