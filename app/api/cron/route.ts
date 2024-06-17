@@ -71,7 +71,7 @@ const updateScorers = async () => {
 };
 
 const updateFixtures = async () => {
-  const todaysDate = new Date();
+  const todaysDate = new Date("2024-06-14");
   const year = todaysDate.getFullYear();
   const month = String(todaysDate.getMonth() + 1).padStart(2, "0");
   const day = String(todaysDate.getDate()).padStart(2, "0");
