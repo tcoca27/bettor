@@ -6,6 +6,7 @@ import { stackServerApp } from "@/stack";
 import { redirect } from "next/navigation";
 import { and, eq } from "drizzle-orm";
 import GroupOrderDisplay from "@/components/GroupOrderDisplay";
+import ExpiredCategory from "@/components/ExpiredCategory";
 
 const GroupStandingsPage = async () => {
   const user = await stackServerApp.getUser({ or: "redirect" });
@@ -38,6 +39,8 @@ const GroupStandingsPage = async () => {
     <>
       {groupVotes.length > 0 ? (
         <GroupOrderDisplay groupVotes={groupVotes} groups={groups} />
+      ) : new Date() > new Date("2024-06-18") ? (
+        <ExpiredCategory />
       ) : (
         <GroupOrderForm groups={groups} dbTeams={dbTeams} />
       )}

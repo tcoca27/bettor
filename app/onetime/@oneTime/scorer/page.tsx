@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import SelectScorerForm from "@/components/SelectScorerForm";
+import ExpiredCategory from "@/components/ExpiredCategory";
 
 const ScorerPage = async () => {
   const user = await stackServerApp.getUser({ or: "redirect" });
@@ -68,6 +69,8 @@ const ScorerPage = async () => {
               ></Image>
               {ownBet.scorerName}
             </div>
+          ) : new Date() > new Date("2024-06-18") ? (
+            <ExpiredCategory />
           ) : (
             <Suspense fallback={<div>Loading...</div>}>
               <SelectScorerForm />

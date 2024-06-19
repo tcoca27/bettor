@@ -22,6 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import ExpiredCategory from "@/components/ExpiredCategory";
 
 const WinnerPage = async () => {
   const user = await stackServerApp.getUser({ or: "redirect" });
@@ -82,6 +83,8 @@ const WinnerPage = async () => {
               ></Image>
               {team?.name}
             </div>
+          ) : new Date() > new Date("2024-06-18") ? (
+            <ExpiredCategory />
           ) : (
             <Suspense fallback={<div>Loading...</div>}>
               <SelectWinnerForm teams={dbTeams} />

@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import SelectRomaniaForm from "@/components/SelectRomaniaForm";
+import ExpiredCategory from "@/components/ExpiredCategory";
 
 const ScorerPage = async () => {
   const user = await stackServerApp.getUser({ or: "redirect" });
@@ -70,6 +71,8 @@ const ScorerPage = async () => {
               ></Image>
               {ownBet.prediction}
             </div>
+          ) : new Date() > new Date("2024-06-18") ? (
+            <ExpiredCategory />
           ) : (
             <Suspense fallback={<div>Loading...</div>}>
               <SelectRomaniaForm />
