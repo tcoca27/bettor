@@ -71,18 +71,21 @@ const OngoingPage = async () => {
   const betToday = todaysFixtures.find((f) => f.fixtures.id === fixture[0]?.id);
 
   const fixtureIds = tomorrowFixtures.map((fixture) => fixture.fixtures.id);
-  const votes = await db
-    .select()
-    .from(fixtureVotes)
-    .where(
-      and(
-        inArray(fixtureVotes.fixtureId, fixtureIds),
+  let votes = [];
+  if (fixtureIds.length > 0) {
+    votes = await db
+      .select()
+      .from(fixtureVotes)
+      .where(
         and(
-          eq(fixtureVotes.houseId, selectedHouse.id),
-          eq(fixtureVotes.voterId, user.id)
+          inArray(fixtureVotes.fixtureId, fixtureIds),
+          and(
+            eq(fixtureVotes.houseId, selectedHouse.id),
+            eq(fixtureVotes.voterId, user.id)
+          )
         )
-      )
-    );
+      );
+  }
 
   const bets = await db
     .select()
@@ -146,10 +149,12 @@ const OngoingPage = async () => {
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-4 py-8 max-md:items-center max-sm:px-4 md:flex-row md:justify-center">
       <div className="space-y-4">
-        <PickTomorrowForm
-          tomorrowFixtures={tomorrowFixtures}
-          voted={votes.length > 0}
-        ></PickTomorrowForm>
+        {fixtureIds.length > 0 && (
+          <PickTomorrowForm
+            tomorrowFixtures={tomorrowFixtures}
+            voted={votes.length > 0}
+          ></PickTomorrowForm>
+        )}
         <YesterdayWinner members={members} houseId={selectedHouse.id} />
       </div>
       <div className="space-y-4">
