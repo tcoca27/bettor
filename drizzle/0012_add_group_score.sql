@@ -1,0 +1,1 @@
+ALTER TABLE "group_order" ADD COLUMN "points" integer;

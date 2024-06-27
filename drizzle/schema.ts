@@ -93,6 +93,7 @@ export const groupOrder = pgTable("group_order", {
   houseId: text("house_id").notNull(),
   group: text("group").notNull(),
   position: text("position").notNull(),
+  points: integer("points"),
 });
 
 export type InsertGroupOrder = typeof groupOrder.$inferInsert;

@@ -13,7 +13,7 @@ const GroupOrderDisplay = ({
   groups: { group: string }[];
 }) => {
   return (
-    <>
+    <div className="flex flex-col text-center">
       <h1 className="mb-4 text-lg font-semibold">Your Selection</h1>
       <div className="flex flex-wrap justify-center gap-4 text-center">
         {groups.map((group) => {
@@ -61,7 +61,7 @@ const GroupOrderDisplay = ({
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 

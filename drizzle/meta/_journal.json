@@ -85,6 +85,13 @@
       "when": 1718564974192,
       "tag": "0011_wildcard_tbl",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1719506611825,
+      "tag": "0012_add_group_score",
+      "breakpoints": true
     }
   ]
 }

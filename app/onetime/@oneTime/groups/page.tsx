@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { and, eq } from "drizzle-orm";
 import GroupOrderDisplay from "@/components/GroupOrderDisplay";
 import ExpiredCategory from "@/components/ExpiredCategory";
+import GroupStandingsResults from "@/components/GroupStandingsResults";
 
 const GroupStandingsPage = async () => {
   const user = await stackServerApp.getUser({ or: "redirect" });
@@ -36,7 +37,8 @@ const GroupStandingsPage = async () => {
     .orderBy(groupOrder.position);
 
   return (
-    <>
+    <div className="flex flex-col gap-4 md:flex-row">
+      <GroupStandingsResults houseId={selectedHouse.id} />
       {groupVotes.length > 0 ? (
         <GroupOrderDisplay groupVotes={groupVotes} groups={groups} />
       ) : new Date() > new Date("2024-06-18") ? (
@@ -44,7 +46,7 @@ const GroupStandingsPage = async () => {
       ) : (
         <GroupOrderForm groups={groups} dbTeams={dbTeams} />
       )}
-    </>
+    </div>
   );
 };
 

@@ -23,6 +23,7 @@ export const getMostPopularMatchByHouse = async (
   fixtureIds: number[],
   houseId: string
 ) => {
+  if (!fixtureIds || fixtureIds.length === 0) return [];
   return db
     .select({
       id: schema.fixtureVotes.fixtureId,
