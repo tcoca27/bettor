@@ -31,7 +31,7 @@ export const handleScoreBet = async (
       voterId: user.id,
       houseId: house.id,
       wildcards: "1",
-      stage: "Groups",
+      stage: "KO",
     });
   }
 

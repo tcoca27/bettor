@@ -138,7 +138,7 @@ const OngoingPage = async () => {
     .from(wildcards)
     .where(
       and(
-        eq(wildcards.stage, "Groups"),
+        eq(wildcards.stage, "KO"),
         and(
           eq(wildcards.houseId, selectedHouse.id),
           eq(wildcards.voterId, user.id)
@@ -164,7 +164,7 @@ const OngoingPage = async () => {
             ownBet={!!bets.find((bet) => bet.voterId === user.id)}
             bets={bets}
             isUserTurn={isUserTurn}
-            wildcardsLeft={3 - dbWildcards.length}
+            wildcardsLeft={2 - dbWildcards.length}
           ></TodaysScore>
         )}
         {betToday && (
