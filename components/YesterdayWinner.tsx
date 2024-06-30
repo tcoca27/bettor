@@ -59,7 +59,7 @@ const YesterdayWinner = async ({
     )
     .orderBy(scoreBet.createdAt);
 
-  const winner = bets.find(
+  const winners = bets.filter(
     (bet) =>
       bet.homeGoals.toString() === betYesterday?.fixtures.homeGoals &&
       bet.awayGoals.toString() === betYesterday?.fixtures.awayGoals
@@ -72,24 +72,26 @@ const YesterdayWinner = async ({
       </CardHeader>
       <Separator />
       <CardContent className="mt-4">
-        {winner && betYesterday ? (
-          <Table>
-            <TableBody>
-              <MatchRow
-                key={winner.id}
-                matchId={winner.fixtureId || 0}
-                homeImage={betYesterday.teams.image}
-                homeName={betYesterday.teams.name}
-                homeScore={winner.homeGoals.toString()}
-                awayImage={betYesterday.teams2.image}
-                awayName={betYesterday.teams2.name}
-                awayScore={winner.awayGoals.toString()}
-                displayName={
-                  members?.find((m) => m.id === winner.voterId)?.name
-                }
-              />
-            </TableBody>
-          </Table>
+        {winners.length > 0 && betYesterday ? (
+          winners.map((winner, index) => (
+            <Table key={index}>
+              <TableBody>
+                <MatchRow
+                  key={winner.id}
+                  matchId={winner.fixtureId || 0}
+                  homeImage={betYesterday.teams.image}
+                  homeName={betYesterday.teams.name}
+                  homeScore={winner.homeGoals.toString()}
+                  awayImage={betYesterday.teams2.image}
+                  awayName={betYesterday.teams2.name}
+                  awayScore={winner.awayGoals.toString()}
+                  displayName={
+                    members?.find((m) => m.id === winner.voterId)?.name
+                  }
+                />
+              </TableBody>
+            </Table>
+          ))
         ) : (
           <div>{"No winner for yesterday's game"}</div>
         )}
